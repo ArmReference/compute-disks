@@ -1,0 +1,115 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "2017.09.01.0",
+  "parameters": {
+    "name": {
+      "type": "string",
+      "maxLength": 80,
+      "metadata": {
+        "description": "Specifies the name of the managed disk that is being created. The name can’t be changed after the disk is created."
+      }
+    },
+    "createOption": {
+      "type": "string",
+      "allowedValues": [
+        "Empty",
+        "FromImage",
+        "Copy",
+        "Import"
+      ],
+      "metadata": {
+        "description": "Indicates how the managed disk is to be created."
+      }
+    },
+    "diskSizeGB": {
+      "type": "int",
+      "metadata": {
+        "description": "Specifies the size of the empty managed disk that is being created."
+      }
+    },
+    "imageReference": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies a reference to an existing platform image."
+      }
+    },
+    "sourceResourceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies a reference to an existing managed disk."
+      }
+    },
+    "sourceUri": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the storage URI of a blob in an unmanaged storage account."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_LRS",
+        "Premium_LRS"
+      ]
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": null,
+      "metadata": {
+        "description": ""
+      }
+    }
+  },
+  "variables": {
+    "comments": {
+      "definition": "https://docs.microsoft.com/en-us/rest/api/compute/manageddisks/disks/disks-create-or-update"
+    },
+    "PropArray": [
+      {
+        "createOption": "[parameters('createOption')]",
+        "diskSizeGB": "[parameters('diskSizeGB')]"
+      },
+      {
+        "createOption": "[parameters('createOption')]",
+        "imageReference": {
+          "id": "[parameters('imageReference')]"
+        }
+      },
+      {
+        "createOption": "[parameters('createOption')]",
+        "sourceResourceId": "[parameters('sourceResourceId')]"
+      },
+      {
+        "createOption": "[parameters('createOption')]",
+        "sourceUri": "[parameters('sourceUri')]"
+      }
+    ],
+    "empty": "[if(equals(parameters('createOption'),'Empty'),variables('PropArray')[0],json('null'))]",
+    "fromImage": "[if(equals(parameters('createOption'),'FromImage'),variables('PropArray')[1],json('null'))]",
+    "copy": "[if(equals(parameters('createOption'),'Copy'),variables('PropArray')[2],json('null'))]",
+    "import": "[if(equals(parameters('createOption'),'Import'),variables('PropArray')[3],json('null'))]",
+    "properties": "[if(equals(parameters('createOption'),'Empty'),variables('empty'),if(equals(parameters('createOption'),'FromImage'),variables('fromImage'),if(equals(parameters('createOption'),'Copy'),variables('copy'),variables('import'))))]",
+    "disks": {
+      "type": "Microsoft.Compute/disks",
+      "apiVersion": "2017-03-30",
+      "name": "[parameters('name')]",
+      "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
+      "properties": "[variables('properties')]",
+      "sku": {
+        "name": "[parameters('sku')]"
+      }
+    }
+  },
+  "resources": [
+  ],
+  "outputs": {
+    "disks": {
+      "type": "object",
+      "value": "[variables('disks')]"
+    }
+  }
+}
