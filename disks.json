@@ -69,21 +69,29 @@
     },
     "PropArray": [
       {
-        "createOption": "[parameters('createOption')]",
+        "creationData": {
+          "createOption": "[parameters('createOption')]"
+        },
         "diskSizeGB": "[parameters('diskSizeGB')]"
       },
       {
-        "createOption": "[parameters('createOption')]",
+        "creationData": {
+          "createOption": "[parameters('createOption')]"
+        },
         "imageReference": {
           "id": "[parameters('imageReference')]"
         }
       },
       {
-        "createOption": "[parameters('createOption')]",
+        "creationData": {
+          "createOption": "[parameters('createOption')]"
+        },
         "sourceResourceId": "[parameters('sourceResourceId')]"
       },
       {
-        "createOption": "[parameters('createOption')]",
+        "creationData": {
+          "createOption": "[parameters('createOption')]"
+        },
         "sourceUri": "[parameters('sourceUri')]"
       }
     ],
