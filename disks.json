@@ -61,6 +61,13 @@
       "metadata": {
         "description": ""
       }
+    },
+    "DependsOn": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Pass dependencies"
+      }
     }
   },
   "variables": {
@@ -105,6 +112,7 @@
       "apiVersion": "2017-03-30",
       "name": "[parameters('name')]",
       "location": "[resourceGroup().location]",
+      "dependsOn": "[if(empty(parameters('DependsOn')),json('null'),parameters('DependsOn'))]",
       "tags": "[parameters('tags')]",
       "properties": "[variables('properties')]",
       "sku": {
