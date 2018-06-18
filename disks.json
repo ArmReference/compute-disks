@@ -120,19 +120,7 @@
       }
     }
   },
-  "resources": [
-    {
-      "type": "Microsoft.Compute/disks",
-      "apiVersion": "2017-03-30",
-      "name": "[parameters('name')]",
-      "location": "[resourceGroup().location]",
-      "tags": "[parameters('tags')]",
-      "properties": "[variables('properties')]",
-      "sku": {
-        "name": "[parameters('sku')]"
-      }
-    }
-  ],
+  "resources": [ ],
   "outputs": {
     "disks": {
       "type": "object",
